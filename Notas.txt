@@ -1,0 +1,2 @@
+https://dev.to/dotnet/hide-shell-flyout-items-and-tabs-in-xamarin-forms-1agi
+D:\TEMP\DEV\ShellLoginSample-master

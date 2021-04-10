@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="IFiscalV2.Views.LoadingPage"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False"             
+             >
+    
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+            <ActivityIndicator Color="Accent"
+                               IsRunning="True"
+                               IsVisible="True" />
+            <Label Text="Loading ..." />
+        </StackLayout>
+    </ContentPage.Content>
+    
+</ContentPage>

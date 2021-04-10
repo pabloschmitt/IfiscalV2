@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Shell xmlns="http://xamarin.com/schemas/2014/forms" 
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+       mc:Ignorable="d"
+       xmlns:local="clr-namespace:IFiscalV2.Views"
+       Title="Shell X"
+       x:Class="IFiscalV2.AppShell">
+
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Style x:Key="BaseStyle" TargetType="Element">
+                <Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="Shell.ForegroundColor" Value="White" />
+                <Setter Property="Shell.TitleColor" Value="White" />
+                <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
+                <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />
+                <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="Shell.TabBarForegroundColor" Value="White"/>
+                <Setter Property="Shell.TabBarUnselectedColor" Value="#95FFFFFF"/>
+                <Setter Property="Shell.TabBarTitleColor" Value="White"/>
+            </Style>
+            <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
+            <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}" />
+
+            <!--
+            Default Styles for all Flyout Items
+            https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/shell/flyout#flyoutitem-and-menuitem-style-classes
+            -->
+            <Style Class="FlyoutItemLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="White"></Setter>
+            </Style>
+            <Style Class="FlyoutItemLayoutStyle" TargetType="Layout" ApplyToDerivedTypes="True">
+                <Setter Property="BackgroundColor" Value="LightBlue"></Setter>
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="White" />
+                                    <Setter TargetName="FlyoutItemLabel" Property="Label.TextColor" Value="{StaticResource Primary}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+
+            <!--
+            Custom Style you can apply to any Flyout Item
+            -->
+            <Style Class="MenuItemLayoutStyle" TargetType="Layout" ApplyToDerivedTypes="True">
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter TargetName="FlyoutItemLabel" Property="Label.TextColor" Value="{StaticResource Primary}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Shell.Resources>
+
+    <!-- Loading/Start Page -->
+    <ShellItem Route="loading" IsVisible="{Binding IsStarting}">
+        <ShellContent ContentTemplate="{DataTemplate local:LoadingPage}" />
+    </ShellItem>
+    <!-- Login and Registration Page -->
+    <ShellContent Route="login" ContentTemplate="{DataTemplate local:LoginPage}" IsVisible="{Binding IsStarting}"/>
+
+
+    <!-- Main Page -->
+    <FlyoutItem Route="main" Title="HOME-A"
+                IsTabStop="False"
+                FlyoutDisplayOptions="AsMultipleItems">
+        
+        <ShellContent Route="home"
+                      ContentTemplate="{DataTemplate local:MainPage}"
+                      IsTabStop="False"
+                      Title="MainPage" />
+        <ShellContent Route="page1"
+                      ContentTemplate="{DataTemplate local:Page1}"
+                      IsTabStop="False"
+                      Title="P1" />
+        <ShellContent Route="page2"
+                      ContentTemplate="{DataTemplate local:Page2}"
+                      IsTabStop="False"
+                      Title="P2" />
+        <ShellContent Route="page3"
+                      ContentTemplate="{DataTemplate local:Page3}"
+                      IsTabStop="False"
+                      Title="P3" />
+        
+        <!--<ShellContent Route="logout"
+                      ContentTemplate="{DataTemplate local:LogoutPage}"
+                      IsTabStop="False"
+                      Title="" />-->
+
+    </FlyoutItem>
+
+
+
+    <MenuItem Text="Logout"
+              Command="{Binding ExecuteLogout}" />
+
+
+</Shell>

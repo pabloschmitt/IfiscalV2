@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Visual="Material"
+             Shell.NavBarIsVisible="True"
+             Shell.TabBarIsVisible="False"
+    Shell.PresentationMode="ModalAnimated"         
+             Shell.FlyoutBehavior="Disabled"
+             Title="Inicio Sesión"
+             x:Class="IFiscalV2.Views.LoginPage">
+    
+    <!--BindingContext="{Binding Main, Source={StaticResource Locator}}"-->
+    <!--Shell.FlyoutBehavior="Disabled"-->
+    
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0"/>
+    </ContentPage.Padding>
+
+    <ContentPage.Content>
+        <StackLayout Spacing="16" Margin="16,32">
+            <Frame>
+                <Label Text="Welcome to Xamarin.Forms Shell Login!" HorizontalTextAlignment="Center" FontSize="Title" />
+            </Frame>
+            <Entry Text="{Binding Username}"
+                   Placeholder="Username" />
+            <Entry Text="{Binding Password}"
+                   Placeholder="Password"
+                   IsPassword="True" />
+            <Button Margin="0,16,0,0" Text="Login"
+                HorizontalOptions="Center"
+                    Command="{Binding ExecuteLogin}" />
+        </StackLayout>
+    </ContentPage.Content>
+    
+</ContentPage>
+    
