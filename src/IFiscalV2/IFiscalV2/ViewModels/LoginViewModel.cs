@@ -4,6 +4,7 @@ using IFiscalV2.Services.Auth;
 using IFiscalV2.Services.Routing;
 using IFiscalV2.Views;
 using Splat;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -41,22 +42,41 @@ namespace IFiscalV2.ViewModels
 
         private void Login()
         {
+            isSigning = true;
+
             _appViewModel.IsStarting = false;
 
-            //Shell.Current.FlyoutIsPresented = false;
-            Shell.Current.Navigation.PopToRootAsync();
-            _routingService.NavigateToAsync("//main/page1");
+            var loginResult = _authService.LoginAsync(new UserLogin { UserName = Username, Password = Password }).Result;
+
+            if (loginResult.IsSuccess)
+            {
+               //TODO
+
+                Shell.Current.Navigation.PopToRootAsync(animated: false);
+                _routingService.NavigateToAsync("//main/page1");
+            }
+            else
+            {
+                Application.Current.MainPage.DisplayAlert(
+                    "Usuario no valido",
+                    "Por verifique el nombre de usuario y contraseña",
+                    "Aceptar");
+            }
+
+            isSigning = false;
         }
 
         private async Task LoginAsync()
         {
-            isSigning = true;
+            
+
+            await Task.Delay(10);
 
 
 
-            var isAuthenticated = _authService.LoginAsync(new UserLogin { UserName = Username, Password = Password }).Result;
+            //var isAuthenticated = _authService.LoginAsync(new UserLogin { UserName = Username, Password = Password }).Result;
 
-            await _routingService.NavigateToAsync("//main/home");
+            //await _routingService.NavigateToAsync("//main/home");
 
             //var isAuthenticated = await _authService.LoginAsync( new UserLogin { UserName = Username, Password = Password });
             //if (isAuthenticated.IsSuccess)

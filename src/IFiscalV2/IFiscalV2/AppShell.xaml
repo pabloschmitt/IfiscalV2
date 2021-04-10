@@ -79,19 +79,16 @@
     <ShellContent Route="login" ContentTemplate="{DataTemplate local:LoginPage}" IsVisible="{Binding IsStarting}"/>
 
 
-    <!-- Main Page -->
+    <!-- //TODO Main Page -->
     <FlyoutItem Route="main" Title="HOME-A"
                 IsTabStop="False"
                 FlyoutDisplayOptions="AsMultipleItems">
+
+        <ShellContent Route="sel_site"  IsVisible="{Binding IsWKF_SiteSelection}"
+                      ContentTemplate="{DataTemplate local:SelectSitePage}"
+                      IsTabStop="False"
+                      Title="Seleccion de sitio" />
         
-        <ShellContent Route="home"
-                      ContentTemplate="{DataTemplate local:MainPage}"
-                      IsTabStop="False"
-                      Title="MainPage" />
-        <ShellContent Route="page1"
-                      ContentTemplate="{DataTemplate local:Page1}"
-                      IsTabStop="False"
-                      Title="P1" />
         <ShellContent Route="page2"
                       ContentTemplate="{DataTemplate local:Page2}"
                       IsTabStop="False"

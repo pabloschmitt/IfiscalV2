@@ -6,6 +6,6 @@
     {
         public bool IsSuccess { get; set; }
         public string Message { get; set; }
-        public string LoginStepTo { get; set; } = LoginStep.None;
+        public string LoginStepTo { get; set; } = LoginSate.None;
     }
 }

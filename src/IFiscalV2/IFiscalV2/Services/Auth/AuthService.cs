@@ -11,6 +11,7 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
     using Xamarin.Forms;
@@ -37,9 +38,100 @@
 
         private AuthApi authApi;
 
+
+        #region ROLES GET/SET HAS IF
+        private bool hasRole_GlobalSiteAdmin;
+
+        public bool HasRole_GlobalSiteAdmin
+        {
+            get { return hasRole_GlobalSiteAdmin; }
+            set { hasRole_GlobalSiteAdmin = value; }
+        }
+
+        private bool hasRole_SiteAdmin;
+
+        public bool HasRole_SiteAdmin
+        {
+            get { return hasRole_SiteAdmin; }
+            set { hasRole_SiteAdmin = value; }
+        }
+
+        private bool hasRole_ConfigAdmin;
+
+        public bool HasRole_ConfigAdmin
+        {
+            get { return hasRole_ConfigAdmin; }
+            set { hasRole_ConfigAdmin = value; }
+        }
+
+        private bool hasRole_UserAdmin;
+
+        public bool HasRole_UserAdmin
+        {
+            get { return hasRole_UserAdmin; }
+            set { hasRole_UserAdmin = value; }
+        }
+
+        private bool hasRole_ResponsableDeEscuela;
+
+        public bool HasRole_ResponsableDeEscuela
+        {
+            get { return hasRole_ResponsableDeEscuela; }
+            set { hasRole_ResponsableDeEscuela = value; }
+        }
+
+        private bool hasRole_Verificador;
+
+        public bool HasRole_Verificador
+        {
+            get { return hasRole_Verificador; }
+            set { hasRole_Verificador = value; }
+        }
+
+        private bool hasRole_Fiscal;
+
+        public bool HasRole_Fiscal
+        {
+            get { return hasRole_Fiscal; }
+            set { hasRole_Fiscal = value; }
+        }
+
+        private bool hasRole_Colador;
+
+        public bool HasRole_Colador
+        {
+            get { return hasRole_Colador; }
+            set { hasRole_Colador = value; }
+        }
+
+        private bool hasRole_Resultados;
+
+        public bool HasRole_Resultados
+        {
+            get { return hasRole_Resultados; }
+            set { hasRole_Resultados = value; }
+        }
+
+        private bool hasRole_SoloVer;
+
+        public bool HasRole_SoloVer
+        {
+            get { return hasRole_SoloVer; }
+            set { hasRole_SoloVer = value; }
+        }
+
+        private bool hasRole_Intendente;
+
+        public bool HasRole_Intendente
+        {
+            get { return hasRole_Intendente; }
+            set { hasRole_Intendente = value; }
+        }
+        #endregion
+
         public AuthService(IRoutingService routingService = null)
         {
-            instance = this;
+            _instance = this;
 
             _routingService = routingService ?? Locator.Current.GetService<IRoutingService>();
 
@@ -48,29 +140,20 @@
         }
 
         #region Singlenton
-        private static AuthService instance;
-
-        public static AuthService GetInstance()
-        {
-            if (instance == null)
-            {
-                return new AuthService();
-            }
-
-            return instance;
-        }
+        private static AuthService _instance;
+        public static AuthService Instance => _instance ?? new AuthService();
         #endregion
 
         public async Task<LoginResult> CheckPreviusLoginAsync()
         {
-            if (ApplicationSettings.LastLoginStep != LoginStep.LoginOk)
+            if (ApplicationSettings.LastLoginResult != LoginSate.LoginOk)
                 return new LoginResult
                 {
                     IsSuccess = false,
                 };
 
             var userLogin = ApplicationSettings.LastUserLogin;
-            var loginResult = await LoginAsync(userLogin, true);
+            var loginResult = await LoginAsync(userLogin);
 
             return loginResult;
         }
@@ -137,57 +220,74 @@
             return true;
         }
 
-        public async Task<LoginResult> LoginAsync(UserLogin userLogin, bool isRenew = false)
+        public async Task<LoginResult> LoginAsync(UserLogin userLogin)
         {
-            await Task.Delay(100);
-            return new LoginResult { IsSuccess = true };
+            StopRefreshToken();
 
-            //if (!isRenew)
-            //    ApplicationSettings.Clear();
+            IsLoggedIn = false;
 
-            //var loginApiResponse = await authApi.Post(ApiEndPoints.AUTH_SERVICE_URL, ApiPrefixes.AUTH_PREFIX, "/Token", userLogin);
-            //if (loginApiResponse.IsSuccess)
-            //{
+            ApplicationSettings.Clear();
 
-            //    if (LoadTokenInfo(loginApiResponse) == false)
-            //    {
-            //        return new LoginResult { IsSuccess = false };
-            //    }
+            var loginApiResponse = await authApi.Post(ApiEndPoints.AUTH_SERVICE_URL, ApiPrefixes.AUTH_PREFIX, "/Token", userLogin);
 
-            //    var cesResponse = await authApi.Get<Common_ES>(
-            //    ApiEndPoints.API_SERVICE_URL, ApiPrefixes.API_PREFIX, "/Common/se",
-            //    new
-            //    {
-            //        SiteId = string.Empty,
-            //        EleccionIdeleccionId = string.Empty,
-            //    },
-            //    Token.AccessToken);
+            if (loginApiResponse.IsSuccess)
+            {
+                if (LoadTokenInfo(loginApiResponse) == false)
+                    return new LoginResult { IsSuccess = false };
 
-            //    if (!cesResponse.IsSuccess)
-            //    {
-            //        ApplicationSettings.Clear();
-            //        return new LoginResult { IsSuccess = false };
-            //    }
+                var cesResponse = await authApi.Get<Common_ES>(
+                    ApiEndPoints.API_SERVICE_URL, ApiPrefixes.API_PREFIX, "/Common/se",
+                    new
+                    {
+                        SiteId = string.Empty,
+                        EleccionIdeleccionId = string.Empty,
+                    },
+                    Token.AccessToken);
 
-            //    Token.CommonES = cesResponse.Result;
+                if (!cesResponse.IsSuccess)
+                {
+                    ApplicationSettings.Clear();
+                    return new LoginResult { IsSuccess = false };
+                }
 
-            //    // Arma login Result
-            //    var loginResult = new LoginResult();
+                Token.CommonES = cesResponse.Result;
 
-            //    loginResult.IsSuccess = true;
+                // Instanciar el los settings los datos del login
+                ApplicationSettings.LastUserLogin = userLogin;
+                ApplicationSettings.LastAccessToken = Token.AccessToken;
 
-            //    // Instanciar el los settings los datos del login
-            //    ApplicationSettings.LastUserLogin = userLogin;
-            //    ApplicationSettings.LastAccessToken = Token.AccessToken;
+                // Si Esta en login OK y es renew se actualiza el token
+                ApplicationSettings.InGlobal = Token.CommonES.InGlobal;
+                ApplicationSettings.InEleccion = Token.CommonES.InEleccion;
+                ApplicationSettings.SelectedSiteId = Token.CommonES.SiteId;
+                ApplicationSettings.SelectedSiteName = Token.CommonES.SiteName;
+                ApplicationSettings.SelectedEleccionId = Token.CommonES.EleccionId;
+                ApplicationSettings.SelectedEleccionName = Token.CommonES.EleccionName;
+                ApplicationSettings.LastLoginResult = LoginSate.LoginOk;
 
-            //    var inGlobal = Token.CommonES.InGlobal;
-            //    var inEleccion = Token.CommonES.InEleccion;
 
-            //    var selectedSiteId = Token.CommonES.SiteId;
-            //    var selectedSiteName = Token.CommonES.SiteName;
-            //    var selectedEleccionId = Token.CommonES.EleccionId;
-            //    var selectedEleccionName = Token.CommonES.EleccionName;
+                // Build Roles List
+                hasRole_GlobalSiteAdmin = Token.Roles.Any(w => w.Equals(AvariableRoles.GlobalSiteAdmin));
+                hasRole_SiteAdmin = Token.Roles.Any(w => w.Equals(AvariableRoles.SiteAdmin));
+                hasRole_UserAdmin = Token.Roles.Any(w => w.Equals(AvariableRoles.UserAdmin));
+                hasRole_ResponsableDeEscuela = Token.Roles.Any(w => w.Equals(AvariableRoles.ResponsableDeEscuela));
+                hasRole_Verificador = Token.Roles.Any(w => w.Equals(AvariableRoles.Verificador));
+                hasRole_Fiscal = Token.Roles.Any(w => w.Equals(AvariableRoles.Fiscal));
+                hasRole_Colador = Token.Roles.Any(w => w.Equals(AvariableRoles.Colador));
+                hasRole_Resultados = Token.Roles.Any(w => w.Equals(AvariableRoles.Resultados));
+                hasRole_SoloVer = Token.Roles.Any(w => w.Equals(AvariableRoles.SoloVer));
+                hasRole_Intendente = Token.Roles.Any(w => w.Equals(AvariableRoles.Intendente));
 
+                StartRefreshToken();
+
+                IsLoggedIn = true;
+                return new LoginResult { IsSuccess = true };
+
+            } // loginApiResponse.IsSuccess
+
+            ApplicationSettings.Clear();
+
+            return new LoginResult { IsSuccess = false };
 
             //    if (ApplicationSettings.LastLoginStep == LoginStep.LoginOk && isRenew)
             //    {
@@ -232,12 +332,7 @@
             //    return loginResult;
             //}
 
-            //ApplicationSettings.Clear();
-            //IsLoggedIn = false;
-            //return new LoginResult
-            //{
-            //    IsSuccess = false,
-            //};
+
 
         } //LoginAsync
 
@@ -288,6 +383,10 @@
 
             if (!loginApiResponse.IsSuccess || LoadTokenInfo(loginApiResponse) == false)
             {
+                await LogoutAsync();
+
+                IsLoggedIn = false;
+
                 await Application.Current.MainPage.DisplayAlert(
                     "ATENCION !",
                     "Sus Credenciales han caducado, por favor inicie sesión nuevamente",
@@ -295,7 +394,11 @@
 
                 // Ahora fuerza la salida de la aplicación al login
                 await _routingService.NavigateToAsync("//main/login");
-                //MainViewModel.GetInstance().SetMainPageFrom(new LoginResult { IsSuccess = false });
+
+            }
+            else
+            {
+                ApplicationSettings.LastAccessToken = Token.AccessToken;
             }
 
             // Start new Token refresh

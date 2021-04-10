@@ -17,6 +17,7 @@ namespace IFiscalV2.ViewModels
         private readonly IRoutingService _routingService;
         private readonly IAuthService _authService;
 
+        //TODO
         private bool isAdmin;
         public bool IsAdmin { get => isAdmin; set => SetProperty(ref isAdmin, value); }
 

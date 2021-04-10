@@ -26,7 +26,7 @@ namespace IFiscalV2
         {
             // Services
             Locator.CurrentMutable.RegisterLazySingleton<IRoutingService>(() => new ShellRoutingService());
-            Locator.CurrentMutable.RegisterLazySingleton<IAuthService>(() => new AuthService());
+            Locator.CurrentMutable.RegisterLazySingleton<IAuthService>(() => AuthService.Instance);
 
             // ViewModels
             Locator.CurrentMutable.Register(() => new LoadingViewModel());

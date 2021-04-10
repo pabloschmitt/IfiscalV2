@@ -4,7 +4,7 @@
     using Plugin.Settings;
     using Plugin.Settings.Abstractions;
 
-    public struct LoginStep
+    public struct LoginSate
     {
         public const string None = "";
         public const string TryLogin = "try_login";
@@ -94,7 +94,7 @@
             set => AppSettings.AddOrUpdateValue(SelectedEleccionNameSettingsKey, (value ?? SettingsDefault));
         }
 
-        public static string LastLoginStep
+        public static string LastLoginResult
         {
             get => AppSettings.GetValueOrDefault(LastLoginStepSettingsKey, SettingsDefault);
             set => AppSettings.AddOrUpdateValue(LastLoginStepSettingsKey, (value ?? SettingsDefault));
