@@ -39,6 +39,7 @@
         private AuthApi authApi;
 
 
+
         #region ROLES GET/SET HAS IF
         private bool hasRole_GlobalSiteAdmin;
 
@@ -129,6 +130,11 @@
         }
         #endregion
 
+        //protected void ShellUpdate()
+        //{
+        //    MessagingCenter.Send<IAuthService>(this, "shell_update");
+        //}
+
         public AuthService(IRoutingService routingService = null)
         {
             _instance = this;
@@ -146,6 +152,7 @@
 
         public async Task<LoginResult> CheckPreviusLoginAsync()
         {
+
             if (ApplicationSettings.LastLoginResult != LoginSate.LoginOk)
                 return new LoginResult
                 {
@@ -281,6 +288,7 @@
                 StartRefreshToken();
 
                 IsLoggedIn = true;
+
                 return new LoginResult { IsSuccess = true };
 
             } // loginApiResponse.IsSuccess

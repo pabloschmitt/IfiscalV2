@@ -13,7 +13,13 @@ namespace IFiscalV2.Views
 
             InitializeComponent();
             BindingContext = ViewModel;
-            //Shell.Current.FlyoutIsPresented = false;
+
+            MessagingCenter.Subscribe<LoginViewModel>(this, "username_focus", (sender) =>
+            {
+                // Do something whenever the "Hi" message is received
+                this.username_txt.Focus();
+            });
+
         }
 
         internal LoginViewModel ViewModel { get; set; } = Locator.Current.GetService<LoginViewModel>();

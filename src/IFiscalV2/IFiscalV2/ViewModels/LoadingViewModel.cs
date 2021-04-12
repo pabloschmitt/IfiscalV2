@@ -24,19 +24,15 @@ namespace IFiscalV2.ViewModels
         {
             var isAuthenticated = await _authService.CheckPreviusLoginAsync();
 
-            await Task.Delay(250);
-
-
-            if (!_appViewModel.IsStarting)
-                _appViewModel.IsStarting = true;
+            await Task.Delay(150);
 
             if (isAuthenticated.IsSuccess)
             {
-                await this._routingService.NavigateToAsync("//main");
+                await _routingService.NavigateToAsync("//main");
             }
             else
             {
-                await this._routingService.NavigateToAsync("//main/login");
+                await _routingService.NavigateToAsync("//main/login");
             }
         }
 

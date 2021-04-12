@@ -20,11 +20,13 @@ namespace IFiscalV2.Views
         }
 
         internal LoadingViewModel ViewModel { get; set; } = Locator.Current.GetService<LoadingViewModel>();
+        internal AppViewModel ShellViewModel { get; set; } = Locator.Current.GetService<AppViewModel>();
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
             ViewModel.Init();
+            //ShellViewModel.IsStarting = false;
         }
 
     } // LoadingPage

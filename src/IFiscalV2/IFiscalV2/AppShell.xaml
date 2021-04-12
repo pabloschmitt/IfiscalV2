@@ -84,31 +84,37 @@
                 IsTabStop="False"
                 FlyoutDisplayOptions="AsMultipleItems">
 
-        <ShellContent Route="sel_site"  IsVisible="{Binding IsWKF_SiteSelection}"
-                      ContentTemplate="{DataTemplate local:SelectSitePage}"
+        <ShellContent Route="site_change" IsVisible="{Binding IsVisible_SiteChange}"
+                      ContentTemplate="{DataTemplate local:SiteChangePage}"
                       IsTabStop="False"
                       Title="Seleccion de sitio" />
-        
-        <ShellContent Route="page2"
-                      ContentTemplate="{DataTemplate local:Page2}"
-                      IsTabStop="False"
-                      Title="P2" />
-        <ShellContent Route="page3"
-                      ContentTemplate="{DataTemplate local:Page3}"
-                      IsTabStop="False"
-                      Title="P3" />
-        
-        <!--<ShellContent Route="logout"
-                      ContentTemplate="{DataTemplate local:LogoutPage}"
-                      IsTabStop="False"
-                      Title="" />-->
 
+        <ShellContent Route="eleccion_change" IsVisible="{Binding IsVisible_EleccionChange}"
+                      ContentTemplate="{DataTemplate local:EleccionChangePage}"
+                      IsTabStop="False"
+                      Title="Seleccion de sitio" />
+
+        
+        <ShellContent Route="resultados" IsVisible="{Binding IsVisible_Resultados}"
+                      ContentTemplate="{DataTemplate local:ResultadosPage}"
+                      IsTabStop="False"
+                      Title="Seleccion de sitio" />
+
+        <ShellContent Route="sel_mesas" IsVisible="{Binding IsVisible_Mesas}"
+                      ContentTemplate="{DataTemplate local:MesasPage}"
+                      IsTabStop="False"
+                      Title="Seleccion de sitio" />        
+
+        <ShellContent Route="page1"
+                      ContentTemplate="{DataTemplate local:Page1}"
+                      IsTabStop="False"
+                      Title="( PG 1 )" />
     </FlyoutItem>
 
 
 
-    <MenuItem Text="Logout"
+    <MenuItem Text="Cerrar" 
               Command="{Binding ExecuteLogout}" />
-
+    <!-- IconImageSource="baseline_exit_to_app_black_48.png" -->
 
 </Shell>

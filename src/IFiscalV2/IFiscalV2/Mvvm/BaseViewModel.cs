@@ -33,6 +33,13 @@
             }
         }
 
+        bool isCommandExecuting;
+        public bool IsCommandExecuting
+        {
+            protected set { SetProperty(ref isCommandExecuting, value); }
+            get { return isCommandExecuting; }
+        }
+
         string title = string.Empty;
         public string Title
         {
@@ -40,7 +47,7 @@
             set { SetProperty(ref title, value); }
         }
 
-        protected bool SetProperty<T>(ref T backingStore, T value,
+        public bool SetProperty<T>(ref T backingStore, T value,
             [CallerMemberName]string propertyName = "",
             Action onChanged = null)
         {
@@ -55,7 +62,7 @@
 
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        public void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             var changed = PropertyChanged;
             if (changed == null)

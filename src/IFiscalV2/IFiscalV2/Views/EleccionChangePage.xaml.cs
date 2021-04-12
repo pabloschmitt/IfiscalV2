@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace IFiscalV2.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Page3 : ContentPage
+    public partial class EleccionChangePage : ContentPage
     {
-        public Page3()
+        public EleccionChangePage()
         {
             InitializeComponent();
         }

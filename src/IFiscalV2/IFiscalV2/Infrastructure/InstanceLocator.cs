@@ -2,7 +2,7 @@
 {
     using IFiscalV2.ViewModels;
     using Splat;
-    
+
     public class InstanceLocator
     {
         public AppViewModel Main { get; set; }

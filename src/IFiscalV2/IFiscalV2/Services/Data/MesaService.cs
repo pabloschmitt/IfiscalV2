@@ -16,7 +16,7 @@
         {
             instance = this;
 
-            authService = AuthService.GetInstance();
+            authService = AuthService.Instance;
             mesasApi = new MesaApi();
         }
 

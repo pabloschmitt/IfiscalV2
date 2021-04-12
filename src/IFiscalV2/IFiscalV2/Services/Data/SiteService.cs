@@ -14,25 +14,16 @@
         private SiteApi siteApi;
         public SiteService()
         {
-            instance = this;
+            _instance = this;
 
-            authService = AuthService.GetInstance();
+            authService = AuthService.Instance;
             siteApi = new SiteApi();
         }
 
 
-        #region Singlenton
-        private static SiteService instance;
-
-        public static SiteService GetInstance()
-        {
-            if (instance == null)
-            {
-                return new SiteService();
-            }
-
-            return instance;
-        }
+        #region Singleton
+        private static SiteService _instance;
+        public static SiteService Instance => _instance is null ? new SiteService() : _instance;
         #endregion
 
 

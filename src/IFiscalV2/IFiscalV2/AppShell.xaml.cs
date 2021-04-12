@@ -1,4 +1,5 @@
-﻿using IFiscalV2.ViewModels;
+﻿using IFiscalV2.Services.Auth;
+using IFiscalV2.ViewModels;
 using IFiscalV2.Views;
 using Xamarin.Forms;
 
@@ -22,7 +23,13 @@ namespace IFiscalV2
 
             BindingContext = AppViewModel.Instance;
 
-        }
+            if ((BindingContext as AppViewModel).IsStarting)
+                (BindingContext as AppViewModel).IsStarting = false;
+        } // AppShell CTOR
+
+
+
+
 
     } // AppShell
 

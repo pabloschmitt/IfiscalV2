@@ -28,7 +28,7 @@ namespace IFiscalV2.ViewModels
             _appViewModel = _appViewModel ?? Locator.Current.GetService<AppViewModel>();
 
             //ExecuteLogin = new Command(async () => await LoginAsync(), () => !isSigning);
-            ExecuteLogin = new Command( () =>  Login(), () => !isSigning);
+            ExecuteLogin = new Command( async () =>  await LoginAsync(), () => !isSigning);
         }
 
         #region Singleton
@@ -37,65 +37,37 @@ namespace IFiscalV2.ViewModels
         #endregion
 
         public string Username { get; set; } = "pablo.admin";
-        public string Password { get; set; } = "123456";
+        public string Password { get; set; } = "*1971@erPMT";
         public ICommand ExecuteLogin { get; set; }
-
-        private void Login()
-        {
-            isSigning = true;
-
-            _appViewModel.IsStarting = false;
-
-            var loginResult = _authService.LoginAsync(new UserLogin { UserName = Username, Password = Password }).Result;
-
-            if (loginResult.IsSuccess)
-            {
-               //TODO
-
-                Shell.Current.Navigation.PopToRootAsync(animated: false);
-                _routingService.NavigateToAsync("//main/page1");
-            }
-            else
-            {
-                Application.Current.MainPage.DisplayAlert(
-                    "Usuario no valido",
-                    "Por verifique el nombre de usuario y contraseña",
-                    "Aceptar");
-            }
-
-            isSigning = false;
-        }
 
         private async Task LoginAsync()
         {
+            isSigning = true;
+
+            var loginResult = await _authService.LoginAsync(new UserLogin { UserName = Username, Password = Password });
+
+            if (loginResult.IsSuccess)
+            {
+                //TODO 1 -> (ARMAR ) : Funcion o Servicio ( Calculo de Ruta a navegar y Que opciones de Menu )
+                isSigning = false;
+
+                MessagingCenter.Send<LoginViewModel>(this, "shell_update");
+
+                //await Shell.Current.Navigation.PopToRootAsync(animated: false);
+                //await _routingService.NavigateToAsync("//main/page1");
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("Usuario no valido", "Por verifique el nombre de usuario y contraseña",  "Aceptar");
+                isSigning = false;
+
+                MessagingCenter.Send<LoginViewModel>(this, "username_focus");
+                
+            }
             
-
-            await Task.Delay(10);
-
-
-
-            //var isAuthenticated = _authService.LoginAsync(new UserLogin { UserName = Username, Password = Password }).Result;
-
-            //await _routingService.NavigateToAsync("//main/home");
-
-            //var isAuthenticated = await _authService.LoginAsync( new UserLogin { UserName = Username, Password = Password });
-            //if (isAuthenticated.IsSuccess)
-            //{
-            //    //await Shell.Current.Navigation.PopToRootAsync();
-            //    //await Shell.Current.Navigation.PopAsync();
-            //    //await Shell.Current.GoToAsync("//main/home");
-            //    //await Task.Delay(150);
-            //    await _routingService.NavigateToAsync("//main/home");
-            //}
-            //else
-            //{
-            //    await Application.Current.MainPage.DisplayAlert(
-            //        "Usuario no valido",
-            //        "Por verifique el nombre de usuario y contraseña",
-            //        "Aceptar");
-            //}
-            isSigning = false;
         }
+
+        
 
     } // LoginViewModel
 

@@ -21,6 +21,7 @@
 
         public async Task<Response<TResult>> CheckConnection()
         {
+            
             if (!CrossConnectivity.Current.IsConnected)
             {
                 return new Response<TResult>
@@ -30,15 +31,16 @@
                 };
             }
 
-            var isReachable = await CrossConnectivity.Current.IsRemoteReachable("google.com");
-            if (!isReachable)
-            {
-                return new Response<TResult>
-                {
-                    IsSuccess = false,
-                    Message = "No hay Acceso a Internet",
-                };
-            }
+            await Task.Delay(1);
+            //var isReachable = await CrossConnectivity.Current.IsRemoteReachable("google.com");
+            //if (!isReachable)
+            //{
+            //    return new Response<TResult>
+            //    {
+            //        IsSuccess = false,
+            //        Message = "No hay Acceso a Internet",
+            //    };
+            //}
 
             return new Response<TResult>
             {

@@ -1,4 +1,5 @@
 ﻿using IFiscalV2.Services.Auth;
+using IFiscalV2.Services.Data;
 using IFiscalV2.Services.Routing;
 using IFiscalV2.ViewModels;
 using IFiscalV2.Views;
@@ -27,6 +28,8 @@ namespace IFiscalV2
             // Services
             Locator.CurrentMutable.RegisterLazySingleton<IRoutingService>(() => new ShellRoutingService());
             Locator.CurrentMutable.RegisterLazySingleton<IAuthService>(() => AuthService.Instance);
+            Locator.CurrentMutable.RegisterLazySingleton<IPageWorkflowServiceOptions>(() => PageWorkflowService.Instance);
+            Locator.CurrentMutable.RegisterLazySingleton<SiteService>(() => SiteService.Instance);
 
             // ViewModels
             Locator.CurrentMutable.Register(() => new LoadingViewModel());
@@ -34,6 +37,9 @@ namespace IFiscalV2
 
             // Siempre al Final
             Locator.CurrentMutable.Register(() => AppViewModel.Instance);
+
+            Locator.CurrentMutable.RegisterLazySingleton<SiteChangeViewModel>(() => new SiteChangeViewModel());
+
         }
 
         //protected async override void OnStart()

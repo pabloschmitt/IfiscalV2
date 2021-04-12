@@ -7,7 +7,7 @@
              Visual="Material"
              Shell.NavBarIsVisible="True"
              Shell.TabBarIsVisible="False"
-    Shell.PresentationMode="ModalAnimated"         
+             Shell.PresentationMode="ModalAnimated"         
              Shell.FlyoutBehavior="Disabled"
              Title="Inicio Sesión"
              x:Class="IFiscalV2.Views.LoginPage">
@@ -24,7 +24,7 @@
             <Frame>
                 <Label Text="Welcome to Xamarin.Forms Shell Login!" HorizontalTextAlignment="Center" FontSize="Title" />
             </Frame>
-            <Entry Text="{Binding Username}"
+            <Entry Text="{Binding Username}" x:Name="username_txt"
                    Placeholder="Username" />
             <Entry Text="{Binding Password}"
                    Placeholder="Password"

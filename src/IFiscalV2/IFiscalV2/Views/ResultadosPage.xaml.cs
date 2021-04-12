@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace IFiscalV2.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class SelectSitePage : ContentPage
+    public partial class ResultadosPage : ContentPage
     {
-        public SelectSitePage()
+        public ResultadosPage()
         {
             InitializeComponent();
         }

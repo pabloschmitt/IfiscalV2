@@ -8,7 +8,6 @@
     using System.Threading.Tasks;
 
 
-    //TODO CommonService
     public class CommonService
     {
 
@@ -18,7 +17,7 @@
         {
             instance = this;
 
-            authService = AuthService.GetInstance();
+            authService = AuthService.Instance;
             commonApi = new CommonApi();
         }
 

@@ -15,7 +15,7 @@
         {
             instance = this;
 
-            authService = AuthService.GetInstance();
+            authService = AuthService.Instance;
             eleccionApi = new EleccionApi();
         }
 

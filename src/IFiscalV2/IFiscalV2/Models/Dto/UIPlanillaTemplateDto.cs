@@ -66,7 +66,6 @@
         }
         #endregion
 
-        //TODO RESOLVER
         public void RiseOnPropertyChanged()
         {
             

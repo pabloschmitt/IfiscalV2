@@ -20,7 +20,6 @@
 
     }
 
-    //TODO ResultadoLisParResponse
     public class ResultadoLisParDto
     {
         public string TipoResultado { get; set; } = string.Empty;

@@ -17,7 +17,7 @@
         {
             instance = this;
 
-            authService = AuthService.GetInstance();
+            authService = AuthService.Instance;
             planillasApi = new PlanillaApi();
         } 
         #endregion

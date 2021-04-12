@@ -45,6 +45,7 @@
         private const string IsGlobalSettingsKey = "is_global";
         private const string InGlobalSettingsKey = "in_global";
         private const string InEleccionSettingsKey = "in_eleccion";
+        private const string LastRouteSettingsKey = "last_route";
 
         private static readonly string SettingsDefault = string.Empty;
 
@@ -62,6 +63,12 @@
                 AppSettings.AddOrUpdateValue(LastUserNameSettingsKey, value.UserName ?? SettingsDefault);
                 AppSettings.AddOrUpdateValue(LastUserPasswordKey, value.Password ?? SettingsDefault);
             }
+        }
+
+        public static string LastRoute
+        {
+            get => AppSettings.GetValueOrDefault(LastRouteSettingsKey, SettingsDefault);
+            set => AppSettings.AddOrUpdateValue(LastRouteSettingsKey, (value ?? SettingsDefault));
         }
 
         public static string LastAccessToken
