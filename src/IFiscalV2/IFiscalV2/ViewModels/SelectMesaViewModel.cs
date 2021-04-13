@@ -14,30 +14,28 @@ using Xamarin.Forms;
 
 namespace IFiscalV2.ViewModels
 {
-    public class SiteChangeViewModel : BaseViewModel, IShellUpdateMessage
+    public class SelectMesaViewModel : BaseViewModel, IShellUpdateMessage
     {
         private readonly IRoutingService _routingService;
         private readonly IAuthService _authService;
         private readonly IPageWorkflowServiceOptions _pageWorkflowServiceOptions;
-        private readonly SiteService _siteService;
+        private readonly MesaService _mesaService;
 
         private IPageWorkflowService _pageWorkflowService => (_pageWorkflowServiceOptions as IPageWorkflowService);
 
-        private ObservableCollection<SiteDto> sites;
-
-        public ObservableCollection<SiteDto> Sites
+        private ObservableCollection<MesaResponseModel> mesasCache;
+        public ObservableCollection<MesaResponseModel> MesasCache
         {
-            get { return sites; }
-            set { SetProperty(ref sites, value); }
+            get { return mesasCache; }
+            set { SetProperty(ref mesasCache, value); }
         }
-
 
         public ICommand TapCommand { get; private set; }
 
-        public SiteChangeViewModel(
+        public SelectMesaViewModel(
             IRoutingService routingService = null, IAuthService authService = null,
             IPageWorkflowServiceOptions pageWorkflowServiceOptions = null,
-            SiteService siteService = null
+            MesaService mesaService = null
             )
         {
             _instance = this;
@@ -45,49 +43,51 @@ namespace IFiscalV2.ViewModels
             _routingService = routingService ?? Locator.Current.GetService<IRoutingService>();
             _authService = authService ?? Locator.Current.GetService<IAuthService>();
             _pageWorkflowServiceOptions = _pageWorkflowServiceOptions ?? Locator.Current.GetService<IPageWorkflowServiceOptions>();
-            _siteService = siteService ?? Locator.Current.GetService<SiteService>();
+            _mesaService = mesaService ?? Locator.Current.GetService<MesaService>();
 
-            TapCommand = new Command<SiteDto>( (args) => OnTapped(args), (args) => !IsCommandExecuting);
+            //TapCommand = new Command<EleccionDto>((args) => OnTapped(args), (args) => !IsCommandExecuting);
         }
 
         #region Singleton
-        private static SiteChangeViewModel _instance;
-        public static SiteChangeViewModel Instance => _instance is null ? new SiteChangeViewModel() : _instance;
+        private static SelectMesaViewModel _instance;
+        public static SelectMesaViewModel Instance => _instance is null ? new SelectMesaViewModel() : _instance;
         #endregion
 
         public async Task LoadAsync()
         {
             IsBusy = true;
 
-            var apiResult = await _siteService.FindSitesAsync();
+            var apiResult = await _mesaService.FindMesasAsync();
 
             if (apiResult.IsSuccess)
-                Sites = new ObservableCollection<SiteDto>(apiResult.Result.Data);
+            {
+                // Actualiza las mesas en la vista
+                if (mesasCache == null)
+                    mesasCache = new ObservableCollection<MesaResponseModel>();
+
+                MesasCache = new ObservableCollection<MesaResponseModel>(apiResult.Result.Data);
+
+                //Last_MesaEdited = null;
+            }
 
             IsBusy = false;
+
         }
 
-        //TODO Seguir con lo que es la Seleccion del SITE
-        public void OnTapped(SiteDto o)
+        public void OnTapped(MesaDto o)
         {
             IsCommandExecuting = true;
 
-            _pageWorkflowServiceOptions.SelectedSiteId = o.Id;
-            _pageWorkflowServiceOptions.SelectedSiteName = o.NormalizedName;
-            _pageWorkflowServiceOptions.SelectedEleccionId = string.Empty;
-            _pageWorkflowServiceOptions.SelectedEleccionName = string.Empty;
-            _pageWorkflowServiceOptions.InGlobal = false;
-            _pageWorkflowServiceOptions.InEleccion = false;
-            _pageWorkflowService.Save();
+            //_pageWorkflowServiceOptions.SelectedEleccionId = o.Id;
+            //_pageWorkflowServiceOptions.SelectedEleccionName = o.Name;
+            //_pageWorkflowServiceOptions.InEleccion = true;
+            //_pageWorkflowService.Save();
 
             IsCommandExecuting = false;
 
-            MessagingCenter.Send(this as IShellUpdateMessage, "shell_update");
-            
+            //MessagingCenter.Send(this as IShellUpdateMessage, "shell_update");
         }
 
-
-
-    } // SiteChangeViewModel
+    } // SelectMesaViewModel
 
 }

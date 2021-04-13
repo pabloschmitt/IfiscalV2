@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="IFiscalV2.Views.SelectMesas"
+             x:Name="rootElement"
+             Title="Mesas"
+             Shell.TabBarIsVisible="False"             
+             >
+    <ContentPage.Content>
+
+        <Grid BackgroundColor="#455a64">
+
+            <FlexLayout Direction="Column" 
+                    BackgroundColor="Transparent"
+                    FlexLayout.Grow="1"
+                    HorizontalOptions="EndAndExpand"
+                    VerticalOptions="FillAndExpand">
+
+                <FlexLayout Direction="Row"
+                        BackgroundColor="#448aff"
+                        FlexLayout.Grow="0"
+                        FlexLayout.Shrink="0"
+                        JustifyContent="SpaceEvenly"
+                        AlignItems="Center"
+                        HeightRequest="50">
+
+                    <ImageButton  x:Name="btnRefresh"
+                              Source="outline_autorenew_white_48.png"
+                              HeightRequest="23" WidthRequest="23"
+                              BackgroundColor="#448aff"
+                              CornerRadius="12"
+                              IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBool}}"
+                              
+                              />
+                    <!--Clicked="BtnRefresh_Clicked"-->
+                    <!--Command="{Binding RefreshCommand}"-->
+
+                </FlexLayout>
+
+                <ActivityIndicator x:Name="actIndicator"
+                                   Margin="0,4,0,4"
+                                   Color="White"
+                                   IsVisible="{Binding IsBusy}"
+                                   IsRunning="{Binding IsBusy}"
+                                   VerticalOptions="CenterAndExpand"
+                                   HorizontalOptions="CenterAndExpand"
+                                   HeightRequest="30"
+                                   RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.33}"
+                                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=0.33}"
+                                   />
+
+                <FlexLayout x:Name="mesasCvLyt"
+                        Direction="Column"
+                        FlexLayout.Grow="1"
+                        FlexLayout.Shrink="1"
+                        VerticalOptions="StartAndExpand"
+                        HorizontalOptions="FillAndExpand"
+                        >
+                    <CollectionView x:Name="mesasCV" 
+                                    ItemSizingStrategy="MeasureAllItems"
+                                    Margin="5"
+                                    ItemsUpdatingScrollMode="KeepItemsInView"
+                                    ItemsSource="{Binding MesasCache}"
+                                    SelectionMode="None"
+                                    BackgroundColor="Transparent"
+                                    VerticalOptions="FillAndExpand"
+                                    HorizontalOptions="FillAndExpand"                                    
+                                    >
+                        <!--Scrolled="mesasCV_Scrolled"-->
+
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical" Span="3" 
+                                         VerticalItemSpacing="10"
+                                          HorizontalItemSpacing="10"
+                                         />
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+
+                                <Grid
+                                BackgroundColor="{Binding BackColor}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                  >
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="80" />
+                                    </Grid.RowDefinitions>
+
+                                    <StackLayout Grid.Row="0" Margin="10">
+
+                                        <!--<StackLayout.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                                Tapped="Handle_Tapped_Visual"
+                                                Command="{Binding Source={x:Reference rootElement}, Path=BindingContext.TapCommand}"
+                                                CommandParameter="{Binding}"
+                                                NumberOfTapsRequired="1" />
+                                        </StackLayout.GestureRecognizers>-->
+
+                                        <Label Grid.Column="0" 
+                                           VerticalOptions="CenterAndExpand" 
+                                           HorizontalOptions="CenterAndExpand"
+                                           TextColor="{Binding FontColor}"
+                                           Text="{Binding NroMesa}" FontSize="Large" FontAttributes="Bold" />
+                                    </StackLayout>
+
+                                </Grid>
+
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+
+
+
+                    </CollectionView>
+
+
+                </FlexLayout>
+
+            </FlexLayout>
+
+        </Grid>
+
+    </ContentPage.Content>
+</ContentPage>
+    

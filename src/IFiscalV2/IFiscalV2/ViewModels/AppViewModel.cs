@@ -40,7 +40,7 @@ namespace IFiscalV2.ViewModels
             _authService = authService ?? Locator.Current.GetService<IAuthService>();
             _pageWorkflowServiceOptions = _pageWorkflowServiceOptions ?? Locator.Current.GetService<IPageWorkflowServiceOptions>();
 
-            MessagingCenter.Subscribe<LoginViewModel>(this, "shell_update", async (sender) => 
+            MessagingCenter.Subscribe<IShellUpdateMessage>(this, "shell_update", async (sender) => 
             {
                 await ShellUpdate();
             });
@@ -75,7 +75,7 @@ namespace IFiscalV2.ViewModels
 
             Route = _pageWorkflowService.GetNextRoute();
 
-            await Shell.Current.Navigation.PopToRootAsync(animated: false);
+            //await Shell.Current.Navigation.PopToRootAsync(animated: false);
             await _routingService.NavigateToAsync(Route);
 
 

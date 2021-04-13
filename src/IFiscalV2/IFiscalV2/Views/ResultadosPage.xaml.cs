@@ -1,4 +1,6 @@
-﻿using System;
+﻿using IFiscalV2.ViewModels;
+using Splat;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,5 +18,8 @@ namespace IFiscalV2.Views
         {
             InitializeComponent();
         }
+
+       
+
     }
 }

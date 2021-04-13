@@ -14,24 +14,15 @@
 
         public MesaService()
         {
-            instance = this;
+            _instance = this;
 
             authService = AuthService.Instance;
             mesasApi = new MesaApi();
         }
 
         #region Singlenton
-        private static MesaService instance;
-
-        public static MesaService GetInstance()
-        {
-            if (instance == null)
-            {
-                return new MesaService();
-            }
-
-            return instance;
-        }
+        private static MesaService _instance;
+        public static MesaService Instance => _instance ?? new MesaService();
         #endregion
 
         public async Task<Response<MesaResponseModel>> FindMesaByNroAsync(int mesaNro)

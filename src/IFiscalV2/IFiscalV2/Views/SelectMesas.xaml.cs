@@ -12,20 +12,27 @@ using Xamarin.Forms.Xaml;
 namespace IFiscalV2.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class SiteChangePage : ContentPage
+    public partial class SelectMesas : ContentPage
     {
-        public SiteChangePage()
+        public SelectMesas()
         {
             InitializeComponent();
             BindingContext = ViewModel;
         }
 
+        private bool onAppearingCalled;
         protected async override void OnAppearing()
         {
+            onAppearingCalled = false;
+
             base.OnAppearing();
             await ViewModel.LoadAsync();
-        }
-        internal SiteChangeViewModel ViewModel { get; set; } = Locator.Current.GetService<SiteChangeViewModel>();
 
-    }
+            onAppearingCalled = true;
+
+        }
+
+        internal SelectMesaViewModel ViewModel { get; set; } = Locator.Current.GetService<SelectMesaViewModel>();
+
+    } // SelectMesas
 }

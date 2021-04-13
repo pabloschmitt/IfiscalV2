@@ -87,23 +87,23 @@
         <ShellContent Route="site_change" IsVisible="{Binding IsVisible_SiteChange}"
                       ContentTemplate="{DataTemplate local:SiteChangePage}"
                       IsTabStop="False"
-                      Title="Seleccion de sitio" />
+                      Title="Sitios" />
 
         <ShellContent Route="eleccion_change" IsVisible="{Binding IsVisible_EleccionChange}"
                       ContentTemplate="{DataTemplate local:EleccionChangePage}"
                       IsTabStop="False"
-                      Title="Seleccion de sitio" />
+                      Title="Elecciones" />
 
+        <ShellContent Route="sel_mesas" IsVisible="{Binding IsVisible_Mesas}"
+                      ContentTemplate="{DataTemplate local:SelectMesas}"
+                      IsTabStop="False"
+                      Title="Mesas" />
         
         <ShellContent Route="resultados" IsVisible="{Binding IsVisible_Resultados}"
                       ContentTemplate="{DataTemplate local:ResultadosPage}"
                       IsTabStop="False"
-                      Title="Seleccion de sitio" />
-
-        <ShellContent Route="sel_mesas" IsVisible="{Binding IsVisible_Mesas}"
-                      ContentTemplate="{DataTemplate local:MesasPage}"
-                      IsTabStop="False"
-                      Title="Seleccion de sitio" />        
+                      Title="Resultados" />
+      
 
         <ShellContent Route="page1"
                       ContentTemplate="{DataTemplate local:Page1}"

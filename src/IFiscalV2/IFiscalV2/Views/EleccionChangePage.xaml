@@ -1,12 +1,93 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="IFiscalV2.Views.EleccionChangePage">
+             x:Class="IFiscalV2.Views.EleccionChangePage"
+             x:Name="rootElement"
+             Title="Elecciones"
+             Shell.TabBarIsVisible="False"
+             >
+    
     <ContentPage.Content>
+
         <StackLayout>
-            <Label Text="EleccionChangePage"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+
+            <ActivityIndicator x:Name="actIndicator"
+                                   Margin="0,4,0,4"
+                                   Color="White"
+                                   IsVisible="{Binding IsBusy}"
+                                   IsRunning="{Binding IsBusy}"
+                                   VerticalOptions="CenterAndExpand"
+                                   HorizontalOptions="CenterAndExpand"
+                                   HeightRequest="30"
+                                   RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.33}"
+                                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=0.33}"
+                                   />
+
+            <FlexLayout Direction="Column"
+                        FlexLayout.Grow="1"
+                        FlexLayout.Shrink="1"
+                        VerticalOptions="StartAndExpand"
+                        HorizontalOptions="FillAndExpand"
+                        >
+                <CollectionView ItemSizingStrategy="MeasureAllItems"
+                                Margin="5"
+                                ItemsUpdatingScrollMode="KeepItemsInView"
+                                ItemsSource="{Binding Elecciones}"
+                                SelectionMode="None"
+                                BackgroundColor="Transparent"
+                                >
+
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="1" 
+                                         VerticalItemSpacing="10"
+                                          HorizontalItemSpacing="10"
+                                         />
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+
+                            <Grid
+                                BackgroundColor="#455a64" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                  >
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="80" />
+                                </Grid.RowDefinitions>
+
+                                <StackLayout Grid.Row="0" Margin="10">
+
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                                Command="{Binding Source={x:Reference rootElement}, Path=BindingContext.TapCommand}"
+                                                CommandParameter="{Binding}"
+                                                NumberOfTapsRequired="1" />
+                                    </StackLayout.GestureRecognizers>
+
+                                    <Label Grid.Column="0" 
+                                           VerticalOptions="CenterAndExpand" 
+                                           HorizontalOptions="StartAndExpand"
+                                           TextColor="#eceff1"
+                                           Text="{Binding Name}" 
+                                           FontSize="Large" FontAttributes="Bold" />
+                                </StackLayout>
+
+                            </Grid>
+
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+
+
+                </CollectionView>
+
+
+            </FlexLayout>
+
+
         </StackLayout>
+
     </ContentPage.Content>
+
 </ContentPage>
+    

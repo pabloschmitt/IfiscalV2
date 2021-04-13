@@ -30,7 +30,9 @@ namespace IFiscalV2
             Locator.CurrentMutable.RegisterLazySingleton<IAuthService>(() => AuthService.Instance);
             Locator.CurrentMutable.RegisterLazySingleton<IPageWorkflowServiceOptions>(() => PageWorkflowService.Instance);
             Locator.CurrentMutable.RegisterLazySingleton<SiteService>(() => SiteService.Instance);
-
+            Locator.CurrentMutable.RegisterLazySingleton<EleccionService>(() => EleccionService.Instance);
+            Locator.CurrentMutable.RegisterLazySingleton<MesaService>(() => MesaService.Instance);
+            
             // ViewModels
             Locator.CurrentMutable.Register(() => new LoadingViewModel());
             Locator.CurrentMutable.Register(() => LoginViewModel.Instance);
@@ -38,7 +40,9 @@ namespace IFiscalV2
             // Siempre al Final
             Locator.CurrentMutable.Register(() => AppViewModel.Instance);
 
-            Locator.CurrentMutable.RegisterLazySingleton<SiteChangeViewModel>(() => new SiteChangeViewModel());
+            Locator.CurrentMutable.RegisterLazySingleton<SiteChangeViewModel>(() => SiteChangeViewModel.Instance);
+            Locator.CurrentMutable.RegisterLazySingleton<EleccionChangeViewModel>(() => EleccionChangeViewModel.Instance);
+            Locator.CurrentMutable.RegisterLazySingleton<SelectMesaViewModel>(() => SelectMesaViewModel.Instance);
 
         }
 

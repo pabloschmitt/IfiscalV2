@@ -11,7 +11,7 @@ using Xamarin.Forms;
 
 namespace IFiscalV2.ViewModels
 {
-    public class LoginViewModel : BaseViewModel
+    public class LoginViewModel : BaseViewModel , IShellUpdateMessage
     {
         private readonly IRoutingService _routingService;
         private readonly IAuthService _authService;
@@ -51,7 +51,7 @@ namespace IFiscalV2.ViewModels
                 //TODO 1 -> (ARMAR ) : Funcion o Servicio ( Calculo de Ruta a navegar y Que opciones de Menu )
                 isSigning = false;
 
-                MessagingCenter.Send<LoginViewModel>(this, "shell_update");
+                MessagingCenter.Send(this as IShellUpdateMessage, "shell_update");
 
                 //await Shell.Current.Navigation.PopToRootAsync(animated: false);
                 //await _routingService.NavigateToAsync("//main/page1");
@@ -61,7 +61,7 @@ namespace IFiscalV2.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Usuario no valido", "Por verifique el nombre de usuario y contraseña",  "Aceptar");
                 isSigning = false;
 
-                MessagingCenter.Send<LoginViewModel>(this, "username_focus");
+                MessagingCenter.Send(this, "username_focus");
                 
             }
             

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace IFiscalV2.Services.Api
+namespace IFiscalV2.ViewModels
 {
-    class Class1
+    public interface IShellUpdateMessage
     {
     }
 }

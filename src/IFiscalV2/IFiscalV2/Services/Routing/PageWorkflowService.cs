@@ -51,7 +51,7 @@ namespace IFiscalV2.Services.Routing
             IsVisible_SiteChange = false;
             IsVisible_EleccionChange = false;
             IsVisible_Resultados = false;
-            IsVisible_Mesas = false; 
+            IsVisible_Mesas = false;
             #endregion
 
             if (_authService.IsLoggedIn)
@@ -59,8 +59,9 @@ namespace IFiscalV2.Services.Routing
                 if (_authService.HasRole_GlobalSiteAdmin || _authService.HasRole_SiteAdmin)
                 {
                     SelectedSiteName = InGlobal ? "GLOBAL" : $"{SelectedSiteName}";
-                    IsVisible_SiteChange = (_authService.HasRole_GlobalSiteAdmin && _authService.HasRole_GlobalSiteAdmin);
-                    IsVisible_EleccionChange = (_authService.HasRole_GlobalSiteAdmin && !InGlobal);
+                    IsVisible_SiteChange = 
+                        (_authService.HasRole_GlobalSiteAdmin && _authService.HasRole_GlobalSiteAdmin && InGlobal);
+                    IsVisible_EleccionChange = (_authService.HasRole_GlobalSiteAdmin && !InGlobal && !InEleccion);
 
                 } // HasRole_GlobalSiteAdmin
 
@@ -81,35 +82,35 @@ namespace IFiscalV2.Services.Routing
             #region Armado de la Ruta a la cual dirigirse
             if (_authService.IsLoggedIn)
             {
-                if (Route.Equals(string.Empty))
+                if (_authService.HasRole_GlobalSiteAdmin || _authService.HasRole_SiteAdmin)
                 {
-                    if (_authService.HasRole_GlobalSiteAdmin || _authService.HasRole_SiteAdmin)
+                    if (InGlobal)
                     {
-                        if (InGlobal)
-                        {
-                            Route = "//main/site_change";
-                        }
-                        else
+                        Route = "//main/site_change";
+                    }
+                    else
+                    {
+                        if (!InEleccion)
                         {
                             Route = "//main/eleccion_change";
                         }
+                        else
+                        {
+                            Route = "//main/sel_mesas";
+                        }
                     }
-                    else if (_authService.HasRole_Resultados && InEleccion)
-                    {
-                        Route = "//main/resultados";
-                    }
-                    else if ((_authService.HasRole_Fiscal || _authService.HasRole_ResponsableDeEscuela) && InEleccion)
-                    {
-                        Route = "//main/sel_mesas";
-                    }
-
-                    ApplicationSettings.LastRoute = Route;
-
-                } else
+                }
+                else if (_authService.HasRole_Resultados && InEleccion)
                 {
-                    // Ya esta en una Ruta, se debe decirdir a donde ir
+                    Route = "//main";
+                }
+                else if ((_authService.HasRole_Fiscal || _authService.HasRole_ResponsableDeEscuela) && InEleccion)
+                {
+                    Route = "//main";
+                }
 
-                } // if (Route.Equals(string.Empty))
+                ApplicationSettings.LastRoute = Route;
+
             }
             else
             {
@@ -129,6 +130,17 @@ namespace IFiscalV2.Services.Routing
             SelectedSiteName = ApplicationSettings.SelectedSiteName;
             SelectedEleccionId = ApplicationSettings.SelectedEleccionId;
             SelectedEleccionName = ApplicationSettings.SelectedEleccionName;
+        }
+
+        public void Save()
+        {
+            ApplicationSettings.LastRoute = Route;
+            ApplicationSettings.InGlobal = InGlobal;
+            ApplicationSettings.InEleccion = InEleccion;
+            ApplicationSettings.SelectedSiteId = SelectedSiteId;
+            ApplicationSettings.SelectedSiteName = SelectedSiteName;
+            ApplicationSettings.SelectedEleccionId = SelectedEleccionId;
+            ApplicationSettings.SelectedEleccionName = SelectedEleccionName;
         }
 
     } // PageWorkflowService

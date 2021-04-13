@@ -13,7 +13,7 @@
         private EleccionApi eleccionApi;
         public EleccionService()
         {
-            instance = this;
+            _instance = this;
 
             authService = AuthService.Instance;
             eleccionApi = new EleccionApi();
@@ -21,17 +21,8 @@
 
 
         #region Singlenton
-        private static EleccionService instance;
-
-        public static EleccionService GetInstance()
-        {
-            if (instance == null)
-            {
-                return new EleccionService();
-            }
-
-            return instance;
-        }
+        private static EleccionService _instance;
+        public static EleccionService Instance => _instance ?? new EleccionService();
         #endregion
 
         public async Task<Response<ServiceFindAsyncResponse<EleccionDto>>> FindAsync( 

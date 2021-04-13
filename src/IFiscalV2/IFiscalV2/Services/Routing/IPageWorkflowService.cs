@@ -5,6 +5,8 @@
         void SincFromSettings();
         void BuildShellVisibleItems();
         string GetNextRoute();
+
+        void Save();
     }
 
 
